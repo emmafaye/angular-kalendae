@@ -1,0 +1,30 @@
+{
+  "name": "angular-kalendae",
+  "version": "1.0.0",
+  "homepage": "https://github.com/matthewhardnack/bower-kalendae",
+  "authors": [
+    "Matthew Hardnack <matthewhardnack@gmail.com>"
+  ],
+  "main": ["angular.kalendae.js"],
+  "description": "Angular directive to create a dropdown or inline datepicker using the Javascript agnostic library Kalendae.",
+  "keywords": [
+    "datepicker",
+    "kalendae",
+    "directive",
+    "calendar"
+  ],
+  "dependencies": {
+    "kalendae": ">=0.4.1",
+    "moment": ">=2.2.1",
+    "animate.css": ">=2.1.0"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "src"
+  ]
+}
