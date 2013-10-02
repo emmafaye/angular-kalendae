@@ -2,24 +2,31 @@
 
 var module = angular.module('Kalendae', []);
 
+module.factory('kal', ['$window', function($window) {
+    return $window.Kalendae;
+}]);
+
 module.factory('Moment', ['$window', function($window) {
     return $window.moment;
 }]);
 
-module.directive('kalendae', ['$parse', 'KalendaeAPI', function($parse, KalendaeAPI) {
+module.directive('kalendae', ['$parse', 'kal', 'KalendaeAPI', function($parse, kal, KalendaeAPI) {
     return {
         restrict: 'EA',
         link: function(scope, element, attrs) {
             var model      = $parse(attrs.ngModel);
+            var blackout   = scope.$eval(attrs.blackout);
 
-            var type       = attrs.kalendae === 'dropdown' ? Kalendae.Input : Kalendae;
+            var type       = attrs.kalendae === 'dropdown' ? kal.Input : kal;
             var datePicker = new type(element[0], {
                 mode       : attrs.mode        || 'single',
                 months     : attrs.months      || 1,
                 useYearNav : attrs.useYearNav  || true,
                 direction  : attrs.direction   || 'any',
-                closeButton: attrs.closeButton || false
+                closeButton: attrs.closeButton || false,
+                blackout   : blackout          || false
             });
+
             KalendaeAPI.setDatePicker(datePicker);
 
             // Requires animate.css in order to animate.
@@ -29,6 +36,9 @@ module.directive('kalendae', ['$parse', 'KalendaeAPI', function($parse, Kalendae
                 var selectedDate = KalendaeAPI.setDate(date);
 
                 model.assign(scope, selectedDate);
+                scope.$apply(function() {
+                    scope.$eval(attrs.callback);
+                });
 
                 // When using the dropdown datepicker, hide after selecting a date.
                 attrs.kalendae === 'dropdown' && element[0].blur();
