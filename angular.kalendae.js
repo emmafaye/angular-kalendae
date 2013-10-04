@@ -34,7 +34,6 @@ module.directive('kalendae', ['$parse', 'kal', 'KalendaeAPI', function($parse, k
 
             datePicker.subscribe('date-clicked', function(date) {
                 var selectedDate = KalendaeAPI.setDate(date);
-
                 model.assign(scope, selectedDate);
                 scope.$apply(function() {
                     scope.$eval(attrs.callback);
@@ -43,6 +42,17 @@ module.directive('kalendae', ['$parse', 'kal', 'KalendaeAPI', function($parse, k
                 // When using the dropdown datepicker, hide after selecting a date.
                 attrs.kalendae === 'dropdown' && element[0].blur();
             });
+
+            // On init set date to the current model value.
+            var defaultDate = scope.$eval(attrs.ngModel);
+
+            if(defaultDate) {
+                KalendaeAPI.setSelected(defaultDate);
+                scope.$eval(attrs.callback);
+            }
+
+            // When using the dropdown datepicker, hide after selecting a date.
+            attrs.kalendae === 'dropdown' && element[0].blur();
         }
     };
 }]);
