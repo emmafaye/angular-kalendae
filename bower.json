@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "kalendae": ">=0.4.1",
-    "moment": ">=2.2.1",
+    "momentjs": ">=2.2.1",
     "animate.css": ">=2.1.0"
   },
   "license": "MIT",
