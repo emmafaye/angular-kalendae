@@ -32,7 +32,7 @@ module.directive('kalendae', ['$parse', 'kal', 'KalendaeAPI', function($parse, k
             // Requires animate.css in order to animate.
             angular.element(datePicker.container).addClass('animated fadeInDown');
 
-            datePicker.subscribe('date-clicked', function(date) {
+            /*datePicker.subscribe('date-clicked', function(date) {
                 var selectedDate = KalendaeAPI.setDate(date);
                 model.assign(scope, selectedDate);
                 scope.$apply(function() {
@@ -41,7 +41,7 @@ module.directive('kalendae', ['$parse', 'kal', 'KalendaeAPI', function($parse, k
 
                 // When using the dropdown datepicker, hide after selecting a date.
                 attrs.kalendae === 'dropdown' && element[0].blur();
-            });
+            });*/
 
             // On init set date to the current model value.
             var defaultDate = scope.$eval(attrs.ngModel);
@@ -53,6 +53,19 @@ module.directive('kalendae', ['$parse', 'kal', 'KalendaeAPI', function($parse, k
 
             // When using the dropdown datepicker, hide after selecting a date.
             attrs.kalendae === 'dropdown' && element[0].blur();
+            
+            datePicker.subscribe('change', function(date) {
+
+                var selectedDate = KalendaeAPI.getSelected();
+                model.assign(scope, selectedDate);
+                scope.$apply(function() {
+                    scope.$eval(attrs.callback);
+                });
+
+                // When using the dropdown datepicker, hide after selecting a date.
+                attrs.kalendae === 'dropdown' && element[0].blur();
+
+            });
         }
     };
 }]);
@@ -107,6 +120,9 @@ module.factory('KalendaeAPI', ['Moment', function(Moment) {
             }
 
             return valueByDate;
+        },
+        getSelected: function () { // when using  mode:multiple, you can getSelected values
+            return this.datePicker.getSelected();
         }
     };
 }]);
